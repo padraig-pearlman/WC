@@ -37,6 +37,7 @@ const teams = {
 
 var players = {
     "P": {
+        code: "P",
         name: "Padraig",
         matches: [],
         matches_played: 0,
@@ -46,6 +47,7 @@ var players = {
         points: 0
     },
     "C": {
+        code: "C",
         name: "Chris",
         matches: [],
         matches_played: 0,
@@ -55,6 +57,7 @@ var players = {
         points: 0
     },
     "M": {
+        code: "M",
         name: "Malachy",
         matches: [],
         matches_played: 0,
@@ -64,6 +67,7 @@ var players = {
         points: 0
     },
     "L": {
+        code: "L",
         name: "Laura",
         matches: [],
         matches_played: 0,
@@ -74,15 +78,67 @@ var players = {
     }
 }
 
-function getResults () {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            tabulateResults(this.responseText);
-       }
-    };
-    xhttp.open("GET", "https://worldcupjson.net/matches/?by_date=DESC", true);
-    xhttp.send();
+function getResults (useReq = true) {
+    if (useReq) {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                tabulateResults(this.responseText);
+                populateRecentMatches(this.responseText);
+        }
+        };
+        xhttp.open("GET", "https://worldcupjson.net/matches/?by_date=DESC", true);
+        xhttp.send();
+    } else {
+        let results = [{
+            "status": "completed",
+            "winner_code": "ESP",
+            "stage_name": "First stage",
+            "home_team": {
+                "country": "Spain",
+                "code": "ESP",
+                "goals": 5
+            },
+            "away_team": {
+                "country": "Serbia",
+                "code": "SRB",
+                "goals": 1
+            }
+        },
+        {
+            "status": "completed",
+            "winner_code": "WAL",
+            "stage_name": "First stage",
+            "home_team": {
+                "country": "Wales",
+                "code": "WAL",
+                "goals": 4
+            },
+            "away_team": {
+                "country": "England",
+                "code": "ENG",
+                "goals": 1
+            }
+        },
+        {
+            "status": "completed",
+            "winner_code": "BRA",
+            "stage_name": "First stage",
+            "home_team": {
+                "country": "Brazil",
+                "code": "BRA",
+                "goals": 2
+            },
+            "away_team": {
+                "country": "Morocco",
+                "code": "MAR",
+                "goals": 1
+            }
+        }];
+
+        tabulateResults(results);
+        populateRecentMatches(results);
+    }
 }
 
 function tabulateResults (matches) {
@@ -111,14 +167,8 @@ function tabulateResults (matches) {
                 points_for_away_team_owner = 1;
             }
 
-            console.log(points_for_home_team_owner, points_for_away_team_owner);
-
             if (home_team_owner == away_team_owner) {
-                players[home_team_owner].matches.push({
-                    [home_team]: home_team_goals,
-                    [away_team]: away_team_goals,
-                    "Result": `+${points_for_home_team_owner + points_for_away_team_owner}`
-                });
+                players[home_team_owner].matches.push(match);
 
                 players[home_team_owner].matches_played += 2;
                 if (winner != null) {
@@ -130,11 +180,7 @@ function tabulateResults (matches) {
 
                 players[home_team_owner].points += points_for_home_team_owner + points_for_away_team_owner;
             } else {
-                players[home_team_owner].matches.push({
-                    [home_team]: home_team_goals,
-                    [away_team]: away_team_goals,
-                    "Result": `+${points_for_home_team_owner}`
-                });
+                players[home_team_owner].matches.push(match);
 
                 players[home_team_owner].matches_played += 1;
                 players[home_team_owner].points += points_for_home_team_owner;
@@ -147,11 +193,7 @@ function tabulateResults (matches) {
                     players[home_team_owner].draw += 1;
                 }
 
-                players[away_team_owner].matches.push({
-                    [home_team]: home_team_goals,
-                    [away_team]: away_team_goals,
-                    "Result": `+${points_for_away_team_owner}`
-                });
+                players[away_team_owner].matches.push(match);
 
                 players[away_team_owner].matches_played += 1;
                 players[away_team_owner].points += points_for_away_team_owner;
@@ -170,6 +212,7 @@ function tabulateResults (matches) {
     makeTable();
 }
 
+
 function makeTable() {
     let playerValues = Object.values(players);
     table = document.getElementById("standings");
@@ -184,49 +227,57 @@ function makeTable() {
 
     let i;
     for (i = 0; i < playerValues.length; i++) {
-       table.innerHTML += `<tr><td>${playerValues[i].name}</td><td>${playerValues[i].matches_played}</td><td>${playerValues[i].win}</td><td>${playerValues[i].loss}</td><td>${playerValues[i].draw}</td><td>${playerValues[i].points}</td>`; 
+       table.innerHTML += `<tr onClick="showOnlyMatches('${playerValues[i].code}')"><td>${playerValues[i].name}</td><td>${playerValues[i].matches_played}</td><td>${playerValues[i].win}</td><td>${playerValues[i].loss}</td><td>${playerValues[i].draw}</td><td>${playerValues[i].points}</td>`; 
     }
 }
 
-// tabulateResults([
-//     {
-//         "status": "completed",
-//         "winner_code": "ESP",
-//         "home_team": {
-//             "code": "ESP",
-//             "goals": 5
-//         },
-//         "away_team": {
-//             "code": "SRB",
-//             "goals": 1
-//         }
-//     },
-//     {
-//         "status": "completed",
-//         "winner_code": "WAL",
-//         "home_team": {
-//             "code": "WAL",
-//             "goals": 4
-//         },
-//         "away_team": {
-//             "code": "ENG",
-//             "goals": 1
-//         }
-//     },
-//     {
-//         "status": "completed",
-//         "winner_code": "BRA",
-//         "home_team": {
-//             "code": "BRA",
-//             "goals": 2
-//         },
-//         "away_team": {
-//             "code": "MAR",
-//             "goals": 1
-//         }
-//     },
-// ])
+let matchesView = document.getElementById("matches-view");
+var showing = null;
+let smv = document.getElementById("singular-matches-view");
 
-// makeTable();
+function populateRecentMatches(matches) {
+    let i = 0;
+    for (i = 0; i < Math.min(matches.length, 10); i++) {
+        let match = matches[i];
+        if (match.status == "completed") {
+            matchesView.innerHTML += `
+            <div class="match">
+                <p>${match.stage_name} match</p>
+                <h2>${match.home_team.country}<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.country}<br>${match.away_team.goals}</h2>
+            </div>`;
+        }
+    }
+}
 
-getResults();
+function showOnlyMatches(code) {
+    smv.innerHTML = '<h1 id="whoseMatches"></h1>';
+
+    let person = players[code];
+
+    if (showing == code) {
+        showing = null;
+        smv.classList.add("hidden");
+        matchesView.classList.remove("hidden");
+    } else {
+        showing = code;
+        smv.classList.remove("hidden");
+        matchesView.classList.add("hidden");
+    }
+
+    document.getElementById("whoseMatches").innerText = `${person.name}'s Matches`;
+    
+    let i;
+    for (i = 0; i < person.matches.length; i++) {
+        let match = person.matches[i];
+        console.log(match);
+        smv.innerHTML += `
+            <div class="match">
+                <p>${match.stage_name} match</p>
+                <h2>${match.home_team.country}<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.country}<br>${match.away_team.goals}</h2>
+            </div>`;
+    }
+}
+
+getResults(false);

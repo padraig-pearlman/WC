@@ -9,8 +9,13 @@
     </head>
 
     <body>
+
+        <h1>Current Standings</h1>
+
+        <p>Click on a row to see only that person's matches. Click on them again to show all matches.</p>
+
         <table id="standings">
-            <tr>
+            <tr class="title-row">
                 <th>Name</th>
                 <th>MP</th>
                 <th>W</th>
@@ -19,6 +24,14 @@
                 <th>Points</th>                
             </tr>
         </table>
+
+        <div class="matches-view" id="matches-view">
+            <h1>All Recent Matches</h1>
+        </div>
+
+        <div class="singular-matches-view hidden" id="singular-matches-view">
+        </div>
+
 
         <script src="table.js"></script>
     </body>
