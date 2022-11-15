@@ -8,12 +8,6 @@ table, th, td {
     border-collapse: collapse;
 }
 
-table#teams tr td {
-    border-bottom: none;
-    border-top: none;
-    padding: 3px 8px;
-}
-
 th, td {
     padding: 6px 8px;
     text-align: left;
