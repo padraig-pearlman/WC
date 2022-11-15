@@ -8,12 +8,18 @@ table, th, td {
     border-collapse: collapse;
 }
 
+table#teams tr td {
+    border-bottom: none;
+    border-top: none;
+    padding: 3px 8px;
+}
+
 th, td {
     padding: 6px 8px;
     text-align: left;
 }
 
-tr:not(.title-row):hover {
+table:not(#teams) tr:not(.title-row):hover {
     background-color: #eee;
     cursor: pointer;
     user-select: none;
@@ -45,9 +51,18 @@ h2 {
 }
 
 h2:nth-child(2) {
-    margin-right: 40px;
+    margin-right: 25px;
 }
 
 .hidden {
     display: none;
+}
+
+.rankinglist {
+    margin-right: 50px;
+}
+
+.rankinglist, .teamlist {
+    display: inline-block;
+    vertical-align: top;
 }

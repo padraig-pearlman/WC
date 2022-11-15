@@ -9,27 +9,101 @@
     </head>
 
     <body>
+        <div class="rankinglist">
+            <h1>Current Standings</h1>
 
-        <h1>Current Standings</h1>
+            <p>Click on a row to see only that person's matches. Click on them again to show all matches.</p>
+    
+            <table id="standings">
+                <tr class="title-row">
+                    <th>Name</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>D</th>
+                    <th>Points</th>                
+                </tr>
+            </table>
+        </div>
 
-        <p>Click on a row to see only that person's matches. Click on them again to show all matches.</p>
+        <div class="teamlist">
+            <h1>Teams</h1>
 
-        <table id="standings">
-            <tr class="title-row">
-                <th>Name</th>
-                <th>MP</th>
-                <th>W</th>
-                <th>L</th>
-                <th>D</th>
-                <th>Points</th>                
-            </tr>
-        </table>
+            <table id="teams">
+                <tr class="title-row">
+                    <th>Padraig</th>
+                    <th>Malachy</th>
+                    <th>Laura</th>
+                    <th>Chris</th>
+                </tr>
+    
+                <tr>
+                    <td>Brazil</td>
+                    <td>France</td>
+                    <td>Portugal</td>
+                    <td>Argentina</td>
+                </tr>
+    
+                <tr>
+                    <td>Belgium</td>
+                    <td>Netherlands</td>
+                    <td>Spain</td>
+                    <td>England</td>
+                </tr>
+    
+                <tr>
+                    <td>Switzerland</td>
+                    <td>Germany</td>
+                    <td>Uruguay</td>
+                    <td>Croatia</td>
+                </tr>
+    
+                <tr>
+                    <td>Denmark</td>
+                    <td>Senegal</td>
+                    <td>Poland</td>
+                    <td>United States</td>
+                </tr>
+    
+                <tr>
+                    <td>Mexico</td>
+                    <td>Serbia</td>
+                    <td>Wales</td>
+                    <td>Canada</td>
+                </tr>
+    
+                <tr>
+                    <td>Morocco</td>
+                    <td>Iran</td>
+                    <td>Ghana</td>
+                    <td>Australia</td>
+                </tr>
+    
+                <tr>
+                    <td>Japan</td>
+                    <td>South Korea</td>
+                    <td>Costa Rica</td>
+                    <td>Ecuador</td>
+                </tr>
+    
+                <tr>
+                    <td>Saudi Arabia</td>
+                    <td>Qatar</td>
+                    <td>Tunisia</td>
+                    <td>Cameroon</td>
+                </tr>
+            </table>
+        </div>
 
         <div class="matches-view" id="matches-view">
             <h1>All Recent Matches</h1>
         </div>
 
         <div class="singular-matches-view hidden" id="singular-matches-view">
+        </div>
+
+        <div class="matches-view" id="tomorrow-view">
+            <h1>Tomorrow's Matches</h1>
         </div>
 
 

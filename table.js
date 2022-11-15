@@ -33,6 +33,41 @@ const teams = {
     "KOR": "M"
 }
 
+const groups = {
+    "QAT": "A",
+    "ECU": "A",
+    "SEN": "A",
+    "NED": "A",
+    "ARG": "C",
+    "KSA": "C",
+    "MEX": "C",
+    "POL": "C",
+    "ESP": "E",
+    "CRC": "E",
+    "GER": "E",
+    "JPN": "E",
+    "BRA": "G",
+    "SRB": "G",
+    "SUI": "G",
+    "CMR": "G",
+    "ENG": "B",
+    "IRN": "B",
+    "USA": "B",
+    "WAL": "B",
+    "FRA": "D",
+    "AUS": "D",
+    "DEN": "D",
+    "TUN": "D",
+    "BEL": "F",
+    "CAN": "F",
+    "MAR": "F",
+    "CRO": "F",
+    "POR": "H",
+    "GHA": "H",
+    "URU": "H",
+    "KOR": "H"
+}
+
 // [mp, win, loss, draw, pts]
 
 var players = {
@@ -234,6 +269,7 @@ function makeTable() {
 let matchesView = document.getElementById("matches-view");
 var showing = null;
 let smv = document.getElementById("singular-matches-view");
+let tmv = document.getElementById("tomorrow-view");
 
 function populateRecentMatches(matches) {
     let i = 0;
@@ -242,11 +278,24 @@ function populateRecentMatches(matches) {
         if (match.status == "completed") {
             matchesView.innerHTML += `
             <div class="match">
-                <p>${match.stage_name} match</p>
-                <h2>${match.home_team.country}<br>${match.home_team.goals}</h2>
-                <h2>${match.away_team.country}<br>${match.away_team.goals}</h2>
+                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
+                <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
             </div>`;
         }
+    }
+}
+
+function populateTomorrowMatches(matches) {
+    let i = 0;
+    for (i = 0; i < Math.min(matches.length, 10); i++) {
+        let match = matches[i];
+        tmv.innerHTML += `
+        <div class="match">
+            <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
+            <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
+            <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
+        </div>`;
     }
 }
 
@@ -273,11 +322,22 @@ function showOnlyMatches(code) {
         console.log(match);
         smv.innerHTML += `
             <div class="match">
-                <p>${match.stage_name} match</p>
-                <h2>${match.home_team.country}<br>${match.home_team.goals}</h2>
-                <h2>${match.away_team.country}<br>${match.away_team.goals}</h2>
+                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
+                <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
             </div>`;
     }
 }
 
-getResults(false);
+function tomorrowMatches() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            populateTomorrowMatches(matches);
+        }
+    };
+    xhttp.open("GET", "https://worldcupjson.net/matches/tomorrow", true);
+    xhttp.send();
+}
+
+getResults(true);
