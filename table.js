@@ -118,8 +118,8 @@ function getResults (useReq = true) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                tabulateResults(this.responseText);
-                populateRecentMatches(this.responseText);
+                tabulateResults(JSON.parse(this.responseText));
+                populateRecentMatches(JSON.parse(this.responseText));
         }
         };
         xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=DESC", true);
@@ -177,7 +177,6 @@ function getResults (useReq = true) {
 }
 
 function tabulateResults (matches) {
-    matches = JSON.parse(matches);
     let i = 0;
     for (i = 0; i < matches.length; i++) {
         let match = matches[i];
@@ -202,6 +201,9 @@ function tabulateResults (matches) {
                 points_for_home_team_owner = 1;
                 points_for_away_team_owner = 1;
             }
+
+            match.points_for_home_team_owner = points_for_home_team_owner;
+            match.points_for_away_team_owner = points_for_away_team_owner;
 
             if (home_team_owner == away_team_owner) {
                 players[home_team_owner].matches.push(match);
@@ -288,8 +290,6 @@ function populateRecentMatches(matches) {
 }
 
 function populateTomorrowMatches(matches) {
-    matches = JSON.parse(matches);
-
     let i = 0;
     for (i = 0; i < Math.min(matches.length, 10); i++) {
         let match = matches[i];
@@ -336,12 +336,12 @@ function tomorrowMatches() {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            populateTomorrowMatches(this.responseText);
+            populateTomorrowMatches(JSON.parse(this.responseText));
         }
     };
     xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/tomorrow", true);
     xhttp.send();
 }
 
-getResults(true);
+getResults();
 tomorrowMatches();

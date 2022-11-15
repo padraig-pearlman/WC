@@ -36,6 +36,13 @@ div.match p {
     margin-top: 0;
 }
 
+div.match p:last-child {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: #666;
+}
+
 h2 {
     font-weight: normal;
     text-align: center;
