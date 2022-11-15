@@ -122,7 +122,7 @@ function getResults (useReq = true) {
                 populateRecentMatches(this.responseText);
         }
         };
-        xhttp.open("GET", "https://thingproxy.freeboard.io/fetch/https://worldcupjson.net/matches/?by_date=DESC", true);
+        xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=DESC", true);
         xhttp.send();
     } else {
         let results = [{
@@ -177,6 +177,7 @@ function getResults (useReq = true) {
 }
 
 function tabulateResults (matches) {
+    matches = JSON.parse(matches);
     let i = 0;
     for (i = 0; i < matches.length; i++) {
         let match = matches[i];
@@ -287,6 +288,8 @@ function populateRecentMatches(matches) {
 }
 
 function populateTomorrowMatches(matches) {
+    matches = JSON.parse(matches);
+
     let i = 0;
     for (i = 0; i < Math.min(matches.length, 10); i++) {
         let match = matches[i];
@@ -333,10 +336,10 @@ function tomorrowMatches() {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            populateTomorrowMatches(matches);
+            populateTomorrowMatches(this.responseText);
         }
     };
-    xhttp.open("GET", "https://thingproxy.freeboard.io/fetch/https://worldcupjson.net/matches/tomorrow", true);
+    xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/tomorrow", true);
     xhttp.send();
 }
 
