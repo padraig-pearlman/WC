@@ -122,7 +122,7 @@ function getResults (useReq = true) {
                 populateRecentMatches(this.responseText);
         }
         };
-        xhttp.open("GET", "https://worldcupjson.net/matches/?by_date=DESC", true);
+        xhttp.open("GET", "https://thingproxy.freeboard.io/fetch/https://worldcupjson.net/matches/?by_date=DESC", true);
         xhttp.send();
     } else {
         let results = [{
@@ -336,8 +336,9 @@ function tomorrowMatches() {
             populateTomorrowMatches(matches);
         }
     };
-    xhttp.open("GET", "https://worldcupjson.net/matches/tomorrow", true);
+    xhttp.open("GET", "https://thingproxy.freeboard.io/fetch/https://worldcupjson.net/matches/tomorrow", true);
     xhttp.send();
 }
 
 getResults(true);
+tomorrowMatches();
