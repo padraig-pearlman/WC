@@ -293,11 +293,12 @@ function populateTomorrowMatches(matches) {
     let i = 0;
     for (i = 0; i < Math.min(matches.length, 10); i++) {
         let match = matches[i];
+        console.log(match);
         tmv.innerHTML += `
         <div class="match">
-            <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
-            <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
-            <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
+            <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
+            <h2>${match.home_team.name} (${teams[match.home_team.country]})</h2>
+            <h2>${match.away_team.name} (${teams[match.away_team.country]})</h2>
         </div>`;
     }
 }
