@@ -181,8 +181,8 @@ function tabulateResults (matches) {
     for (i = 0; i < matches.length; i++) {
         let match = matches[i];
         if (match.status == "completed") {
-            let home_team = match.home_team.code; let home_team_goals = match.home_team.goals;
-            let away_team = match.away_team.code; let away_team_goals = match.away_team.goals;
+            let home_team = match.home_team.country; let home_team_goals = match.home_team.goals;
+            let away_team = match.away_team.country; let away_team_goals = match.away_team.goals;
             
             let home_team_owner = teams[home_team]; let away_team_owner = teams[away_team];
             let winner = null;
@@ -192,7 +192,6 @@ function tabulateResults (matches) {
 
             let points_for_home_team_owner;
             let points_for_away_team_owner;
-
 
             if (winner != null) {
                 points_for_home_team_owner = (winner == home_team) ? 3 : 0;
@@ -281,9 +280,9 @@ function populateRecentMatches(matches) {
         if (match.status == "completed") {
             matchesView.innerHTML += `
             <div class="match">
-                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
-                <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
-                <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
+                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
+                <h2>${match.home_team.name} (${teams[match.home_team.country]})<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.name} (${teams[match.away_team.country]})<br>${match.away_team.goals}</h2>
             </div>`;
         }
     }
@@ -326,9 +325,9 @@ function showOnlyMatches(code) {
         console.log(match);
         smv.innerHTML += `
             <div class="match">
-                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.code] + ")" : ""}</p>
-                <h2>${match.home_team.country} (${teams[match.home_team.code]})<br>${match.home_team.goals}</h2>
-                <h2>${match.away_team.country} (${teams[match.away_team.code]})<br>${match.away_team.goals}</h2>
+                <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
+                <h2>${match.home_team.name} (${teams[match.home_team.country]})<br>${match.home_team.goals}</h2>
+                <h2>${match.away_team.name} (${teams[match.away_team.country]})<br>${match.away_team.goals}</h2>
             </div>`;
     }
 }
