@@ -68,8 +68,6 @@ const groups = {
     "KOR": "H"
 }
 
-// [mp, win, loss, draw, pts]
-
 var players = {
     "P": {
         code: "P",
