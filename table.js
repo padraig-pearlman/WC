@@ -118,8 +118,12 @@ function getResults (useReq = true) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                tabulateResults(JSON.parse(this.responseText));
-                populateRecentMatches(JSON.parse(this.responseText));
+                try {
+                    tabulateResults(JSON.parse(this.responseText));
+                    populateRecentMatches(JSON.parse(this.responseText));
+                } catch {
+                    alert("The API we get results from is saying we are sending too many requests. I recommend waiting a minute or two and reloading.");
+                }
         }
         };
         xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=DESC", true);
@@ -292,7 +296,6 @@ function populateTomorrowMatches(matches) {
     let i = 0;
     for (i = 0; i < Math.min(matches.length, 10); i++) {
         let match = matches[i];
-        console.log(match);
         tmv.innerHTML += `
         <div class="match">
             <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
@@ -336,10 +339,20 @@ function tomorrowMatches() {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            populateTomorrowMatches(JSON.parse(this.responseText));
+            try {
+                populateTomorrowMatches(JSON.parse(this.responseText));
+            } catch {
+                console.log(this.responseText);
+            }
         }
     };
-    xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/tomorrow", true);
+
+    let today = new Date();
+    let tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
+
+    let dateRange = `start_date=2022-${today.getMonth() + 1}-${today.getDate()}&end_date=2022-${tomorrow.getMonth() + 1}-${tomorrow.getDate()}`;
+
+    xhttp.open("GET", `https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?${dateRange}`, true);
     xhttp.send();
 }
 
