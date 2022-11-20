@@ -121,62 +121,17 @@ function getResults (useReq = true) {
                 try {
                     tabulateResults(JSON.parse(this.responseText));
                     populateRecentMatches(JSON.parse(this.responseText));
-                } catch {
-                    alert("The API we get results from is saying we are sending too many requests. I recommend waiting a minute or two and reloading.");
+                } catch (e) {
+                    if (e instanceof SyntaxError) {
+                        alert("The API we get results from is saying we are sending too many requests. I recommend waiting a minute or two and reloading.");
+                    } else {
+                        alert("You found a bug that's stopping this site from calculating the results. Tell me ASAP!");
+                    }
                 }
         }
         };
-        xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=DESC", true);
+        xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=desc", true);
         xhttp.send();
-    } else {
-        let results = [{
-            "status": "completed",
-            "winner_code": "ESP",
-            "stage_name": "First stage",
-            "home_team": {
-                "country": "Spain",
-                "code": "ESP",
-                "goals": 5
-            },
-            "away_team": {
-                "country": "Serbia",
-                "code": "SRB",
-                "goals": 1
-            }
-        },
-        {
-            "status": "completed",
-            "winner_code": "WAL",
-            "stage_name": "First stage",
-            "home_team": {
-                "country": "Wales",
-                "code": "WAL",
-                "goals": 4
-            },
-            "away_team": {
-                "country": "England",
-                "code": "ENG",
-                "goals": 1
-            }
-        },
-        {
-            "status": "completed",
-            "winner_code": "BRA",
-            "stage_name": "First stage",
-            "home_team": {
-                "country": "Brazil",
-                "code": "BRA",
-                "goals": 2
-            },
-            "away_team": {
-                "country": "Morocco",
-                "code": "MAR",
-                "goals": 1
-            }
-        }];
-
-        tabulateResults(results);
-        populateRecentMatches(results);
     }
 }
 
@@ -263,6 +218,19 @@ function makeTable() {
         } else if (b.points > a.points) {
             return 1;
         }
+
+        if (a.win > b.win) {
+            return -1;
+        } else if (b.win > a.win) {
+            return 1;
+        }
+        
+        if (a.matches_played > b.matches_played) {
+            return -1;
+        } else if (b.matches_played > a.matches_played) {
+            return 1;
+        }
+
         return 0;
     });
 
@@ -279,29 +247,37 @@ let tmv = document.getElementById("tomorrow-view");
 
 function populateRecentMatches(matches) {
     let i = 0;
-    for (i = 0; i < Math.min(matches.length, 10); i++) {
+
+    let today = new Date();
+    let n=0;
+
+    for (i = 0; i < matches.length; i++) {
+        if (n>=6) break;
         let match = matches[i];
-        if (match.status == "completed") {
+        if (match.status == "completed" && Date.parse(match.datetime) <= today) {
             matchesView.innerHTML += `
             <div class="match">
                 <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
                 <h2>${match.home_team.name} (${teams[match.home_team.country]})<br>${match.home_team.goals}</h2>
                 <h2>${match.away_team.name} (${teams[match.away_team.country]})<br>${match.away_team.goals}</h2>
             </div>`;
+            n++;
         }
     }
 }
 
 function populateTomorrowMatches(matches) {
     let i = 0;
-    for (i = 0; i < Math.min(matches.length, 10); i++) {
+    for (i = 0; i < matches.length; i++) {
         let match = matches[i];
-        tmv.innerHTML += `
-        <div class="match">
-            <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
-            <h2>${match.home_team.name} (${teams[match.home_team.country]})</h2>
-            <h2>${match.away_team.name} (${teams[match.away_team.country]})</h2>
-        </div>`;
+        if (match.status == "future_scheduled") {
+            tmv.innerHTML += `
+                <div class="match">
+                    <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
+                    <h2>${match.home_team.name} (${teams[match.home_team.country]})</h2>
+                    <h2>${match.away_team.name} (${teams[match.away_team.country]})</h2>
+                </div>`;
+        }
     }
 }
 
@@ -325,7 +301,6 @@ function showOnlyMatches(code) {
     let i;
     for (i = 0; i < person.matches.length; i++) {
         let match = person.matches[i];
-        console.log(match);
         smv.innerHTML += `
             <div class="match">
                 <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
@@ -341,8 +316,10 @@ function tomorrowMatches() {
         if (this.readyState == 4 && this.status == 200) {
             try {
                 populateTomorrowMatches(JSON.parse(this.responseText));
-            } catch {
-                console.log(this.responseText);
+            } catch(e) {
+                if (!(e instanceof SyntaxError)) {
+                    alert("You found a bug that's stopping this site from calculating the results. Tell me ASAP!");
+                }
             }
         }
     };

@@ -1,6 +1,6 @@
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    padding: 0 12px;
+    padding: 0 12px 12px 12px;
 }
 
 table, th, td {
@@ -63,7 +63,7 @@ h2:nth-child(2) {
     margin-right: 50px;
 }
 
-.rankinglist, .teamlist {
+/* .rankinglist, .teamlist {
     display: inline-block;
     vertical-align: top;
-}
+} */
