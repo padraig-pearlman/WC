@@ -1,3 +1,5 @@
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
 const teams = {
     "QAT": "M",
     "ECU": "C",
@@ -269,9 +271,10 @@ function populateTomorrowMatches(matches) {
     for (i = 0; i < matches.length; i++) {
         let match = matches[i];
         if (match.status == "future_scheduled") {
+            let matchDay = new Date(match.datetime);
             tmv.innerHTML += `
                 <div class="match">
-                    <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
+                    <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}<br>${days[matchDay.getDay()]} ${matchDay.toLocaleString("en-US")}</p>
                     <h2>${match.home_team.name} (${teams[match.home_team.country]})</h2>
                     <h2>${match.away_team.name} (${teams[match.away_team.country]})</h2>
                 </div>`;
