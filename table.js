@@ -323,7 +323,7 @@ function tomorrowMatches() {
     };
 
     let today = new Date();
-    let tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
+    let tomorrow = new Date(); tomorrow.setDate(today.getDate() + 2);
 
     let dateRange = `start_date=2022-${today.getMonth() + 1}-${today.getDate()}&end_date=2022-${tomorrow.getMonth() + 1}-${tomorrow.getDate()}`;
 
