@@ -334,5 +334,25 @@ function tomorrowMatches() {
     xhttp.send();
 }
 
+function currentMatch() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                match = JSON.parse(this.responseText);
+                let currentBanner = document.getElementById("currentMatch");
+                currentBanner.innerText = `Current Match: ${match[0].home_team.name} (${teams[match[0].home_team.country]}) ${match[0].home_team.goals}-${match[0].away_team.goals} ${match[0].away_team.name} (${teams[match[0].away_team.country]})`
+                currentBanner.classList.remove("hidden");
+            } catch(e) {
+                console.log("Current match error", e);
+            }
+        }
+    };
+
+    xhttp.open("GET", `https://wcm.herokuapp.com/https://worldcupjson.net/matches/current`, true);
+    xhttp.send();
+}
+
 getResults();
 tomorrowMatches();
+currentMatch();
