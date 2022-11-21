@@ -123,14 +123,14 @@ function getResults (useReq = true) {
                     populateRecentMatches(JSON.parse(this.responseText));
                 } catch (e) {
                     if (e instanceof SyntaxError) {
-                        alert("The API we get results from is saying we are sending too many requests. I recommend waiting a minute or two and reloading.");
+                        alert("Something is wrong with the response from my server. I recommend waiting a minute or two and reloading. If that doesn't work tell me!");
                     } else {
                         alert("You found a bug that's stopping this site from calculating the results. Tell me ASAP!");
                     }
                 }
         }
         };
-        xhttp.open("GET", "https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?by_date=desc", true);
+        xhttp.open("GET", "https://wcm.herokuapp.com/https://worldcupjson.net/matches/?by_date=desc", true);
         xhttp.send();
     }
 }
@@ -330,7 +330,7 @@ function tomorrowMatches() {
 
     let dateRange = `start_date=2022-${today.getMonth() + 1}-${today.getDate()}&end_date=2022-${tomorrow.getMonth() + 1}-${tomorrow.getDate()}`;
 
-    xhttp.open("GET", `https://api.codetabs.com/v1/proxy/?quest=https://worldcupjson.net/matches/?${dateRange}`, true);
+    xhttp.open("GET", `https://wcm.herokuapp.com/https://worldcupjson.net/matches/?${dateRange}`, true);
     xhttp.send();
 }
 
