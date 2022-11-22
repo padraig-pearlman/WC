@@ -226,9 +226,9 @@ function makeTable() {
         }
         
         if (a.matches_played > b.matches_played) {
-            return -1;
-        } else if (b.matches_played > a.matches_played) {
             return 1;
+        } else if (b.matches_played > a.matches_played) {
+            return -1;
         }
 
         return 0;
