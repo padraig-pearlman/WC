@@ -26,8 +26,7 @@ th:first-child {
 div.match {
     display: inline-block;
     padding: 10px 20px;
-    border: 2px solid #444;
-    border-radius: 12px;
+    border: 1px solid black;
     margin: 0 20px 20px 0;
 }
 
