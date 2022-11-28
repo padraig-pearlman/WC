@@ -123,7 +123,7 @@ function getResults (useReq = true) {
                     populateRecentMatches(JSON.parse(this.responseText));
                 } catch (e) {
                     if (e instanceof SyntaxError) {
-                        alert("Something is wrong with the response from my server. I recommend waiting a minute or two and reloading. If that doesn't work tell me!");
+                        alert("Something is wrong with the response from my server, most likely because of too many requests. I recommend waiting two minutes then reloading. If that doesn't work tell me!");
                     } else {
                         alert("You found a bug that's stopping this site from calculating the results. Tell me ASAP!");
                     }
