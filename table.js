@@ -340,9 +340,16 @@ function currentMatch() {
         if (this.readyState == 4 && this.status == 200) {
             try {
                 match = JSON.parse(this.responseText);
-                let currentBanner = document.getElementById("currentMatch");
-                currentBanner.innerText = `Current Match: ${match[0].home_team.name} (${teams[match[0].home_team.country]}) ${match[0].home_team.goals}-${match[0].away_team.goals} ${match[0].away_team.name} (${teams[match[0].away_team.country]})`
-                currentBanner.classList.remove("hidden");
+                if (match.length > 0) {
+                    let currentBanner = document.getElementById("currentMatch");
+                    currentBanner.innerText = `Current Match${match.length > 1 ? "es" : ""}: `;
+                    for (let i = 0; i < match.length; i++) {
+                        if (i != 0) { currentBanner.innerText += "   /   "}
+                        currentBanner.innerText += `${match[i].home_team.name} (${teams[match[i].home_team.country]}) ${match[i].home_team.goals}-${match[i].away_team.goals} ${match[i].away_team.name} (${teams[match[i].away_team.country]})`
+                    }
+                    currentBanner.classList.remove("hidden");
+    
+                }
             } catch(e) {
                 console.log("Current match error", e);
             }
