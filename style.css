@@ -23,11 +23,26 @@ th:first-child {
     min-width: 75px;
 }
 
+div.matches-view {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 600px) {
+    .matches-view {
+        justify-content: center;
+    }
+    
+    div.match {
+        flex-basis: 100%;
+    }
+}
+
 div.match {
-    display: inline-block;
     padding: 10px 20px;
     border: 1px solid black;
     margin: 0 20px 20px 0;
+    text-align: center;
 }
 
 div.match p {
