@@ -40,7 +40,7 @@ div.matches-view {
 
 div.match {
     padding: 10px 20px;
-    border: 1px solid black;
+    border: 2px solid black;
     margin: 0 20px 20px 0;
     text-align: center;
 }
