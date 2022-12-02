@@ -1,3 +1,13 @@
+function fix(match) {
+    if (match.id == 38) {
+        match.away_team.goals = 0;
+        match.winner_code = "TUN";
+        match.winner = "Tunisia";
+    }
+
+    return match;
+}
+
 const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 const teams = {
@@ -138,7 +148,7 @@ function getResults (useReq = true) {
 function tabulateResults (matches) {
     let i = 0;
     for (i = 0; i < matches.length; i++) {
-        let match = matches[i];
+        let match = fix(matches[i]);
         if (match.status == "completed") {
             let home_team = match.home_team.country; let home_team_goals = match.home_team.goals;
             let away_team = match.away_team.country; let away_team_goals = match.away_team.goals;
@@ -253,7 +263,7 @@ function populateRecentMatches(matches) {
 
     for (i = 0; i < matches.length; i++) {
         if (n>=6) break;
-        let match = matches[i];
+        let match = fix(matches[i]);
         if (match.status == "completed" && Date.parse(match.datetime) <= today) {
             matchesView.innerHTML += `
             <div class="match">
