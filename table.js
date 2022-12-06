@@ -159,6 +159,14 @@ function tabulateResults (matches) {
             if (match.winner_code == home_team) winner = home_team;
             else if (match.winner_code == away_team) winner = away_team;
 
+            if (winner == null) {
+                if (match.home_team.penalties > match.away_team.penalties) {
+                    winner = home_team;
+                } else if (match.away_team.penalties > match.home_team.penalties) {
+                    winner = away_team;
+                }
+            }
+
             let points_for_home_team_owner;
             let points_for_away_team_owner;
 
@@ -264,12 +272,15 @@ function populateRecentMatches(matches) {
     for (i = 0; i < matches.length; i++) {
         if (n>=6) break;
         let match = fix(matches[i]);
+        let pens = null;
+        if (match.home_team.penalties + match.away_team.penalties > 0) pens = `<p>Penalties: ${match.home_team.penalties} - ${match.away_team.penalties}</p>`;
         if (match.status == "completed" && Date.parse(match.datetime) <= today) {
             matchesView.innerHTML += `
             <div class="match">
                 <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
                 <h2>${match.home_team.name} (${teams[match.home_team.country]})<br>${match.home_team.goals}</h2>
                 <h2>${match.away_team.name} (${teams[match.away_team.country]})<br>${match.away_team.goals}</h2>
+                ${pens == null ? "" : pens}
             </div>`;
             n++;
         }
@@ -312,11 +323,14 @@ function showOnlyMatches(code) {
     let i;
     for (i = 0; i < person.matches.length; i++) {
         let match = person.matches[i];
+        let pens = null;
+        if (match.home_team.penalties + match.away_team.penalties > 0) pens = `<p>Penalties: ${match.home_team.penalties} - ${match.away_team.penalties}</p>`;
         smv.innerHTML += `
             <div class="match">
                 <p>${match.stage_name} match${(match.stage_name == "First stage") ? " (Group " + groups[match.home_team.country] + ")" : ""}</p>
                 <h2>${match.home_team.name} (${teams[match.home_team.country]})<br>${match.home_team.goals}</h2>
                 <h2>${match.away_team.name} (${teams[match.away_team.country]})<br>${match.away_team.goals}</h2>
+                ${pens == null ? "" : pens}
             </div>`;
     }
 }
